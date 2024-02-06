@@ -3,8 +3,10 @@ package controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +29,13 @@ public class BuscadorController {
 		buscadorService.agregar(resultado);
 		
 	}
-	
+	@DeleteMapping(value="eliminar",produces="application/json")
+	public List<Resultado> eliminar(@RequestParam("url") String url){
+		return buscadorService.eliminarResultado(url);
+	}
+	@PutMapping(value="actualizar",produces="application/json",consumes="application/json")
+	public Resultado actualizar(@RequestBody Resultado resultado) {
+		return buscadorService.actualizarDescripcion(resultado.getUrl(), resultado.getDescripcion());
+	}
 	
 }

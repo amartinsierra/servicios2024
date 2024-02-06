@@ -30,6 +30,22 @@ public class BuscadorServiceImpl implements BuscadorService {
 		resultados.add(resultado);
 		
 	}
+	@Override
+	public List<Resultado> eliminarResultado(String url) {
+		resultados.removeIf(r->r.getUrl().equals(url));
+		return resultados;
+	}
+	@Override
+	public Resultado actualizarDescripcion(String url, String nuevaDescripcion) {
+		Resultado resultado=resultados.stream()
+				.filter(r->r.getUrl().equals(url))
+				.findFirst()
+				.orElse(null); //devuelve null, si no existe
+		if(resultado!=null) {
+			resultado.setDescripcion(nuevaDescripcion);
+		}
+		return resultado;
+	}
 	
 	
 
