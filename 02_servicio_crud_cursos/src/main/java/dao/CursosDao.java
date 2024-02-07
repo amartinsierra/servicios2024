@@ -19,6 +19,6 @@ public interface CursosDao extends JpaRepository<Curso, Integer> {
 	void deleteByDenominacion(String denominacion);
 	@Transactional
 	@Modifying
-	@Query("update Curso c set c.precio=c.precio+c.precio*?1/100 where c.denominacion=?2")
+	@Query("update Curso c set c.precio=c.precio*(100+?1)/100 where c.denominacion=?2")
 	void updatePrecio(int porcentaje, String denominacion);
 }

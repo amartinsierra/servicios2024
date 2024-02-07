@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,8 +28,8 @@ public class CursosController {
 	public Curso buscar(@RequestParam("idCurso") int idCurso) {
 		return service.buscarCursoPorId(idCurso);
 	}
-	@GetMapping(value="cursosRango",produces=MediaType.APPLICATION_JSON_VALUE)
-	public List<Curso> cursosRango(@RequestParam("min") double min, @RequestParam("max")  double max){
+	@GetMapping(value="cursos/{min}/{max}",produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<Curso> cursosRango(@PathVariable("min") double min, @PathVariable("max")  double max){
 		return service.buscarCursosRangoPrecios(min, max);
 	}
 	@PostMapping(value="alta",produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
