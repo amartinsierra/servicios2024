@@ -10,12 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Formacion {
-	@JsonProperty(value = "denominacion")  //ambos sentidos
-	//@JsonAlias(value = "denominacion")   //solo serialización
+public class Pais {
+	@JsonAlias(value = "name")
 	private String nombre;
-	@JsonProperty(value = "duracion")
-	//@JsonAlias(value = "duracion")
-	private int horas;
-	private double precio;
+	@JsonAlias(value = "region")
+	private String continente;
+	private String capital;
+	@JsonAlias(value = "population")
+	private long poblacion;
+	@JsonAlias(value = "flag")
+	private String bandera;
 }
