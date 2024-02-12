@@ -53,7 +53,8 @@ public class CursosController {
 		return service.eliminarCurso(nombre);
 	}
 	@PutMapping(value="actualizar")
-	public void actualizar(@RequestParam("porcentaje") int porcentaje, @RequestParam("nombre")  String nombre) {
+	public ResponseEntity<Void> actualizar(@RequestParam("porcentaje") int porcentaje, @RequestParam("nombre")  String nombre) {
 		service.actualizarPrecioCurso(porcentaje, nombre);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
