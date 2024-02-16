@@ -50,15 +50,21 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public List<Book> librosTematica(String tematica) {
-		return Arrays.asList(restClient.get()
-			.uri(urlBase+"catalogo")
-			.header("Authorization", "Bearer "+token)
-			.retrieve()
-			.body(Book[].class)
-		)
-		.stream()
-		.filter(b->b.getTematica().equals(tematica))
-		.toList();
+		try {
+			return Arrays.asList(restClient.get()
+				.uri(urlBase+"catalogo")
+				.header("Authorization", "Bearer "+token)
+				.retrieve()
+				.body(Book[].class)
+			)
+			.stream()
+			.filter(b->b.getTematica().equals(tematica))
+			.toList();
+		}
+		catch(Exception ex) {//solo se pone si todo funciona bien
+			token=getToken();
+			return librosTematica(tematica);
+		}
 	}
 	private String getToken() {
 		
