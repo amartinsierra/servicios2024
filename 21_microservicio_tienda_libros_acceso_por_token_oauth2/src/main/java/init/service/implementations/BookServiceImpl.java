@@ -1,6 +1,7 @@
 package init.service.implementations;
 
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +12,13 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
-import init.model.Formacion;
+import init.model.Book;
 import init.model.TokenResponse;
-import init.service.interfaces.FormacionService;
+import init.service.interfaces.BookService;
 import jakarta.annotation.PostConstruct;
 @Service
-public class FormacionServiceImpl implements FormacionService {
+public class BookServiceImpl implements BookService {
+
 	@Autowired
 	RestClient restClient;
 	@Value("${app.urlAuth}")
@@ -29,7 +31,7 @@ public class FormacionServiceImpl implements FormacionService {
 	String clientId;
 	@Value("${app.grant_type}")
 	String grantType;
-	String urlBase="http://localhost:8500/";
+	String urlBase="http://localhost:9000/";
 	
 	String token;
 	
@@ -37,44 +39,29 @@ public class FormacionServiceImpl implements FormacionService {
 	public void init() {
 		token=getToken();
 	}
-
 	@Override
-	public List<Formacion> catalogo() {
+	public List<String> tematicas() {
 		return Arrays.asList(restClient.get()
-				.uri(urlBase+"cursos")
+				.uri(urlBase+"tematicas")
 				.retrieve()
-				.body(Formacion[].class) //Formacion[].class
+				.body(String[].class) //Formacion[].class
 				);
 	}
 
 	@Override
-	public List<Formacion> catalogoPorDuracionMax(int max) {		
-		return catalogo().stream()
-				.filter(f->f.getHoras()<=max)
-				.toList();
-	}
-
-	@Override
-	public void alta(Formacion formacion) {
-		try {
-		 restClient.post()
-			.uri(urlBase+"alta")
-			.contentType(MediaType.APPLICATION_JSON)
-			.body(formacion)
+	public List<Book> librosTematica(String tematica) {
+		return Arrays.asList(restClient.get()
+			.uri(urlBase+"catalogo")
 			.header("Authorization", "Bearer "+token)
 			.retrieve()
-			.toBodilessEntity(); //ResponseEntity<Void>
-		}
-		catch(Exception ex) {
-			//si hay una excepción porque el token ha caducado
-			//lo regeneramos y intentamos el alta de nuevo
-			getToken();
-			alta(formacion);
-		}
+			.body(Book[].class)
+		)
+		.stream()
+		.filter(b->b.getTematica().equals(tematica))
+		.toList();
 	}
-	
 	private String getToken() {
-		System.out.println(username+" - "+password);
+		
 		MultiValueMap<String,String> params=new LinkedMultiValueMap<>();
 		params.add("client_id", clientId);
 		params.add("username", username);
@@ -89,5 +76,4 @@ public class FormacionServiceImpl implements FormacionService {
 		.body(TokenResponse.class) //TokenResponse
 		.getAccess_token();
 	}
-
 }
