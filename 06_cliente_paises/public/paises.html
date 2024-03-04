@@ -28,8 +28,8 @@
 		cargarContinentes();
 		
 	});
-	var url="http://localhost:8080/05_servicio_paises/"	
-	
+	//var url="http://localhost:8080/05_servicio_paises/"	
+	var url="http://localhost:9000/";
 	function cargarContinentes() {	
 		var res="<select id='lista' onchange='cargarPaises()'>";		
 		$.get(url+"continentes",function(data){	
