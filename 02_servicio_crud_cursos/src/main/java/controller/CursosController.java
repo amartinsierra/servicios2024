@@ -18,8 +18,12 @@ import service.interfaces.CursosService;
 
 @RestController
 public class CursosController {
-	@Autowired
+	//@Autowired
 	CursosService service;
+	
+	public CursosController(CursosService service) {
+		this.service = service;
+	}
 	@GetMapping(value="cursos",produces=MediaType.APPLICATION_JSON_VALUE)
 	public List<Curso> cursos(){
 		return service.cursos();
